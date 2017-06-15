@@ -1,1 +1,19 @@
-Hello World!
+{% extends 'SoftUniBundle::base.html.twig' %}
+
+{% block body %}
+
+            <div id="welcome">
+                <h1>Symfony {{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }}</h1>
+            </div>
+
+            <div id="status">
+
+                <a href="{{ path('admin_product_index') }}">view all products</a>
+                <a href="#">view all categories</a>
+            </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
