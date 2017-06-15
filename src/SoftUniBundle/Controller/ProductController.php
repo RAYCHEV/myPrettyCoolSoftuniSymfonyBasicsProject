@@ -49,6 +49,11 @@ class ProductController extends Controller
             $product ->setCreatedAt(new \DateTime());
             $product ->setUpdatedAt(new \DateTime());
 
+            $file = $product->getPicture();
+            $fileName = $this->get('app.product_pic_uploader') ->upload($file);
+
+            $product->setPicture($fileName);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();

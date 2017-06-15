@@ -3,6 +3,7 @@
 namespace SoftUniBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +14,13 @@ class ProductCategoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('slug')->add('title')->add('description')->add('rank')->add('createdAt')->add('updatedAt');
+        $builder
+            ->add('slug')
+            ->add('title')
+            ->add('description')
+            ->add('rank')
+            ->add('picture', FileType::class, ['label' => 'upload img'])
+        ;
     }
     
     /**

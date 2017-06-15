@@ -63,7 +63,10 @@ class ProductCategory
      */
     private $updatedAt;
 
-
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $picture;
     /**
      * Get id
      *
@@ -217,5 +220,22 @@ class ProductCategory
     {
         return $this->updatedAt;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param mixed $picture
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+    }
+
 }
 

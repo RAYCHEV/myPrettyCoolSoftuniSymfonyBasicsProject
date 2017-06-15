@@ -5,7 +5,8 @@ namespace SoftUniBundle\Controller;
 use SoftUniBundle\Entity\ProductCategory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Productcategory controller.
@@ -26,7 +27,7 @@ class ProductCategoryController extends Controller
 
         $productCategories = $em->getRepository('SoftUniBundle:ProductCategory')->findAll();
 
-        return $this->render('productcategory/index.html.twig', array(
+        return $this->render('SoftUniBundle:productcategory:index.html.twig', array(
             'productCategories' => $productCategories,
         ));
     }
@@ -44,6 +45,15 @@ class ProductCategoryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $productCategory->setCreatedAt(new \DateTime());
+            $productCategory->setUpdatedAt(new \DateTime());
+
+            $file = $productCategory->getPicture();
+            $fileName = $this->get('app.product-category_pic_uploader') ->upload($file);
+
+            $productCategory->setPicture($fileName);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($productCategory);
             $em->flush();
@@ -51,7 +61,7 @@ class ProductCategoryController extends Controller
             return $this->redirectToRoute('admin_product-category_show', array('id' => $productCategory->getId()));
         }
 
-        return $this->render('productcategory/new.html.twig', array(
+        return $this->render('SoftUniBundle:productcategory:new.html.twig', array(
             'productCategory' => $productCategory,
             'form' => $form->createView(),
         ));
@@ -67,7 +77,7 @@ class ProductCategoryController extends Controller
     {
         $deleteForm = $this->createDeleteForm($productCategory);
 
-        return $this->render('productcategory/show.html.twig', array(
+        return $this->render('SoftUniBundle:productcategory:show.html.twig', array(
             'productCategory' => $productCategory,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -86,12 +96,16 @@ class ProductCategoryController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+            $productCategory->setUpdatedAt(new \DateTime());
+
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('admin_product-category_edit', array('id' => $productCategory->getId()));
         }
 
-        return $this->render('productcategory/edit.html.twig', array(
+        return $this->render('SoftUniBundle:productcategory:edit.html.twig', array(
             'productCategory' => $productCategory,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

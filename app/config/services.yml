@@ -4,6 +4,13 @@ parameters:
     #parameter_name: value
 
 services:
+    app.product_pic_uploader:
+        class: SoftUniBundle\Services\FileUploader
+        arguments: ['%product_pic_dir%']
+
+    app.product-category_pic_uploader:
+        class: SoftUniBundle\Services\FileUploader
+        arguments: ['%category_pic_dir%']
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
