@@ -2,6 +2,7 @@
 
 namespace SoftUniBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -81,6 +82,25 @@ class Product
      * @ORM\Column(type="string")
      */
     private $picture;
+
+    /**
+     * @var ProductCategory[]|ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="SoftUniBundle\Entity\ProductCategory", inversedBy="products")
+     *
+     * @ORM\JoinTable(name="products_productCategories")
+     */
+    private $productCategories;
+
+    public function __construct()
+    {
+        $this->productCategories = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getSlug();
+    }
 
     /**
      * Get id
@@ -299,5 +319,22 @@ class Product
     {
         $this->picture = $picture;
     }
+
+    /**
+     * @return ArrayCollection|ProductCategory[]
+     */
+    public function getProductCategories()
+    {
+        return $this->productCategories;
+    }
+
+    /**
+     * @param ArrayCollection|ProductCategory[] $productCategories
+     */
+    public function setProductCategories($productCategories)
+    {
+        $this->productCategories = $productCategories;
+    }
+
 }
 

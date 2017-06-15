@@ -5,7 +5,9 @@ namespace SoftUniBundle\Controller;
 use SoftUniBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Product controller.
@@ -98,6 +100,12 @@ class ProductController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
             $product->setUpdatedAt(new \DateTime());
+
+            $file = $product->getPicture();
+            $fileName = $this->get('app.product_pic_uploader') ->upload($file);
+
+            $product->setPicture($fileName);
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('admin_product_edit', array('id' => $product->getId()));

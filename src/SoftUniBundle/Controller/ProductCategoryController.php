@@ -99,6 +99,10 @@ class ProductCategoryController extends Controller
 
             $productCategory->setUpdatedAt(new \DateTime());
 
+            $file = $productCategory->getPicture();
+            $fileName = $this->get('app.product-category_pic_uploader') ->upload($file);
+
+            $productCategory->setPicture($fileName);
 
             $this->getDoctrine()->getManager()->flush();
 

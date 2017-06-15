@@ -21,7 +21,9 @@ class ProductType extends AbstractType
             ->add('description')
             ->add('price')
             ->add('rank')
-            ->add('picture', FileType::class, ['label' => 'upload img'])
+            ->add('picture', FileType::class, [
+                'data_class' => null,
+                'label' => 'upload img'])
         ;
     }
     
