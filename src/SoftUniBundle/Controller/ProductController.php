@@ -12,14 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Product controller.
  *
- * @Route("admin/product")
  */
 class ProductController extends Controller
 {
     /**
      * Lists all product entities.
      *
-     * @Route("/", name="admin_product_index")
+     * @Route("admin/product/", name="admin_product_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -34,9 +33,27 @@ class ProductController extends Controller
     }
 
     /**
+     * Lists all productCategory entities.
+     *
+     * @Route("product/list", name="product_list_ord_by_rank")
+     * @Method("GET")
+     */
+    public function listAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $product = $em->getRepository('SoftUniBundle:Product')
+            ->findBy([], ['rank' => 'ASC']);
+
+        return $this->render('SoftUniBundle:product:product-list.html.twig', array(
+            'products' => $product,
+        ));
+    }
+
+    /**
      * Creates a new product entity.
      *
-     * @Route("/new", name="admin_product_new")
+     * @Route("admin/product/new", name="admin_product_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -62,7 +79,7 @@ class ProductController extends Controller
             $em->persist($product);
             $em->flush();
 
-            return $this->redirectToRoute('admin_product_show', array('id' => $product->getId()));
+            return $this->redirectToRoute('product_list_ord_by_rank', array('id' => $product->getId()));
         }
 
         return $this->render('SoftUniBundle:product:new.html.twig', array(
@@ -74,7 +91,7 @@ class ProductController extends Controller
     /**
      * Finds and displays a product entity.
      *
-     * @Route("/{id}", name="admin_product_show")
+     * @Route("admin/product/{id}", name="admin_product_show")
      * @Method("GET")
      */
     public function showAction(Product $product)
@@ -90,7 +107,7 @@ class ProductController extends Controller
     /**
      * Displays a form to edit an existing product entity.
      *
-     * @Route("/{id}/edit", name="admin_product_edit")
+     * @Route("admin/product/{id}/edit", name="admin_product_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Product $product)
@@ -123,7 +140,7 @@ class ProductController extends Controller
     /**
      * Deletes a product entity.
      *
-     * @Route("/{id}", name="admin_product_delete")
+     * @Route("admin/product/{id}", name="admin_product_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Product $product)
