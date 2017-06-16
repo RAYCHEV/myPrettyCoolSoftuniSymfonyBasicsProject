@@ -2,6 +2,7 @@
 
 namespace SoftUniBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,6 +23,12 @@ class ProductCategoryType extends AbstractType
             ->add('picture', FileType::class, [
                 'data_class' => null,
                 'label' => 'upload img'])
+
+            ->add('products', EntityType::class,
+                [
+                    'class' => 'SoftUniBundle\Entity\Product',
+                    'multiple' => true
+                ])
         ;
     }
     

@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Productcategory controller.
  *
- * @Route("admin/product-category")
+ *
  */
 class ProductCategoryController extends Controller
 {
     /**
      * Lists all productCategory entities.
      *
-     * @Route("/", name="admin_product-category_index")
+     * @Route("admin/product-category/", name="admin_product-category_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -32,10 +32,29 @@ class ProductCategoryController extends Controller
         ));
     }
 
+
+    /**
+     * Lists all productCategory entities.
+     *
+     * @Route("category/list", name="product-category_list_ord_by_rank")
+     * @Method("GET")
+     */
+    public function listAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $productCategories = $em->getRepository('SoftUniBundle:ProductCategory')
+                        ->findBy([], ['rank' => 'ASC']);
+
+        return $this->render('SoftUniBundle:productcategory:category-list.html.twig', array(
+            'productCategories' => $productCategories,
+        ));
+    }
+
     /**
      * Creates a new productCategory entity.
      *
-     * @Route("/new", name="admin_product-category_new")
+     * @Route("admin/product-category/new", name="admin_product-category_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -58,7 +77,7 @@ class ProductCategoryController extends Controller
             $em->persist($productCategory);
             $em->flush();
 
-            return $this->redirectToRoute('admin_product-category_show', array('id' => $productCategory->getId()));
+            return $this->redirectToRoute('product-category_list_ord_by_rank');
         }
 
         return $this->render('SoftUniBundle:productcategory:new.html.twig', array(
@@ -70,7 +89,7 @@ class ProductCategoryController extends Controller
     /**
      * Finds and displays a productCategory entity.
      *
-     * @Route("/{id}", name="admin_product-category_show")
+     * @Route("admin/product-category/{id}", name="admin_product-category_show")
      * @Method("GET")
      */
     public function showAction(ProductCategory $productCategory)
@@ -86,7 +105,7 @@ class ProductCategoryController extends Controller
     /**
      * Displays a form to edit an existing productCategory entity.
      *
-     * @Route("/{id}/edit", name="admin_product-category_edit")
+     * @Route("admin/product-category/{id}/edit", name="admin_product-category_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, ProductCategory $productCategory)
@@ -119,7 +138,7 @@ class ProductCategoryController extends Controller
     /**
      * Deletes a productCategory entity.
      *
-     * @Route("/{id}", name="admin_product-category_delete")
+     * @Route("admin/product-category/{id}", name="admin_product-category_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, ProductCategory $productCategory)

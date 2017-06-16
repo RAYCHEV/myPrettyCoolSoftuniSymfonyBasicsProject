@@ -8,6 +8,7 @@
             <tr>
                 <th>Id</th>
                 <th>Slug</th>
+                <th>Picture</th>
                 <th>Title</th>
                 <th>Subtitle</th>
                 <th>Description</th>
@@ -23,6 +24,10 @@
             <tr>
                 <td><a href="{{ path('admin_product_show', { 'id': product.id }) }}">{{ product.id }}</a></td>
                 <td>{{ product.slug }}</td>
+                <td>
+                    <a href="{{ asset('uploads/product/' ~ product.picture) }}">
+                        <img src="{{ asset('uploads/product/' ~ product.picture) }}"> </a>
+                </td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.subtitle }}</td>
                 <td>{{ product.description }}</td>

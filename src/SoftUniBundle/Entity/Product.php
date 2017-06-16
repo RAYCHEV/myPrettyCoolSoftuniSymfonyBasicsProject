@@ -321,11 +321,13 @@ class Product
     }
 
     /**
-     * @return ArrayCollection|ProductCategory[]
+     * @return (ProductCategory|String)[]
      */
     public function getProductCategories()
     {
-        return $this->productCategories;
+        return array_map(function (ProductCategory $pr){
+                return $pr->getSlug();
+            }, $this->productCategories->toArray());
     }
 
     /**
@@ -334,7 +336,12 @@ class Product
     public function setProductCategories($productCategories)
     {
         $this->productCategories = $productCategories;
+        return $this;
     }
 
+    public function addProductCategory(ProductCategory $prCat)
+    {
+        $this->productCategories->add($prCat);
+    }
 }
 

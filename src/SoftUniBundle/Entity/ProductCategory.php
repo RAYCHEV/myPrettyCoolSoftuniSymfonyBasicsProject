@@ -73,7 +73,6 @@ class ProductCategory
      * @var Product[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="SoftUniBundle\Entity\Product", mappedBy="productCategories")
-     *
      */
     private $products;
 
@@ -257,5 +256,27 @@ class ProductCategory
         $this->picture = $picture;
     }
 
+    /**
+     * @return (Product|String)[]
+     */
+    public function getProducts()
+    {
+        return array_map(function (Product $p) {
+            return $p->getSlug();
+        }, $this->products->toArray());
+    }
+
+    /**
+     * @param ArrayCollection|Product[] $products
+     */
+    public function setProducts($products)
+    {
+        $this->products = $products;
+    }
+
+    public function addProduct(Product $prod)
+    {
+        $this->products->add($prod);
+    }
 }
 

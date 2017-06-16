@@ -1,0 +1,46 @@
+{% extends 'SoftUniBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>Productcategories list</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>image</th>
+            <th>Title</th>
+            <th>Rank</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for productCategory in productCategories %}
+            <tr>
+                <td><a href="{{ path('admin_product-category_show', { 'id': productCategory.id }) }}">{{ productCategory.id }}</a></td>
+                <td>
+                    <a href="{{ asset('uploads/product-category/' ~ productCategory.picture) }}">
+                        <img src="{{ asset('uploads/product-category/' ~ productCategory.picture) }}"> </a>
+                </td>
+                <td>{{ productCategory.title }}</td>
+                <td>{{ productCategory.rank }}</td>
+                    <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_product-category_show', { 'id': productCategory.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_product-category_edit', { 'id': productCategory.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_product-category_new') }}">Create a new productCategory</a>
+        </li>
+    </ul>
+{% endblock %}
