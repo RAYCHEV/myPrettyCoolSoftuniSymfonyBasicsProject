@@ -325,9 +325,10 @@ class Product
      */
     public function getProductCategories()
     {
-        return array_map(function (ProductCategory $pr){
-                return $pr->getSlug();
-            }, $this->productCategories->toArray());
+        return $this->productCategories;
+//        return array_map(function (ProductCategory $pr){
+//                return $pr->getSlug();
+//            }, $this->productCategories->toArray());
     }
 
     /**
@@ -339,9 +340,21 @@ class Product
         return $this;
     }
 
-    public function addProductCategory(ProductCategory $prCat)
+    /**
+     * @param ProductCategory $productCategory
+     */
+    public function addProductCategory(ProductCategory $productCategory)
     {
-        $this->productCategories->add($prCat);
+        //can be made some optimisation
+        $this->productCategories->add($productCategory);
+    }
+
+    /**
+     * @param ProductCategory $productCategory
+     */
+    public function removeProductCategory(ProductCategory $productCategory)
+    {
+        $this->productCategories->removeElement($productCategory);
     }
 }
 

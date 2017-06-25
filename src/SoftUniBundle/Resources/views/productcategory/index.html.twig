@@ -13,6 +13,7 @@
                 <th>Rank</th>
                 <th>Createdat</th>
                 <th>Updatedat</th>
+                <th>Products</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -26,6 +27,9 @@
                 <td>{{ productCategory.rank }}</td>
                 <td>{% if productCategory.createdAt %}{{ productCategory.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if productCategory.updatedAt %}{{ productCategory.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% for products in productCategory.getProducts %}
+                        {{ products }}<br>
+                    {% endfor %}
                 <td>
                     <ul>
                         <li>

@@ -72,7 +72,7 @@ class ProductCategory
     /**
      * @var Product[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="SoftUniBundle\Entity\Product", mappedBy="productCategories")
+     * @ORM\ManyToMany(targetEntity="SoftUniBundle\Entity\Product", mappedBy="productCategories", cascade={"persist"})
      */
     private $products;
 
@@ -261,22 +261,64 @@ class ProductCategory
      */
     public function getProducts()
     {
-        return array_map(function (Product $p) {
-            return $p->getSlug();
-        }, $this->products->toArray());
+        return $this->products;
+//        return array_map(function (Product $p) {
+//            return $p->getSlug();
+//        }, $this->products->toArray());
     }
 
     /**
      * @param ArrayCollection|Product[] $products
      */
-    public function setProducts($products)
+    public function setProducts($products = null)
     {
-        $this->products = $products;
+
+//        $this->products = new ArrayCollection();
+//        if (is_null($products))
+//        {
+//            return;
+//        }
+        foreach ($products as $p){
+            $this->addProduct($p);
+        }
     }
 
+    /**
+     * @param Product $prod
+     *
+     */
     public function addProduct(Product $prod)
     {
-        $this->products->add($prod);
+//        if ($this->products->contains($prod))
+//        {
+//            return;
+//        }
+        $prod ->addProductCategory($this);
+        $this->products[] = $prod;
     }
+
+    /**
+     * @param Product $prod
+     */
+    public function removeProduct(Product $prod)
+    {
+        $this->products->removeElement($prod);
+        $prod->removeProductCategory($this);
+    }
+    /**
+     *
+    public function addPost(Post $post)
+    {
+    $this->posts[] = $post;
+    $post->addTag($this);
+    return $this;
+    }
+
+    public function removePost(Post $post)
+    {
+    $this->posts->removeElement($post);
+    $post->removeTag($this);
+    }
+     */
 }
 

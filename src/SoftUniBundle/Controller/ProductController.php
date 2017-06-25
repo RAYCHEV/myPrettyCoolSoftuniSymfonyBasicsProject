@@ -6,7 +6,6 @@ use SoftUniBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -68,10 +67,8 @@ class ProductController extends Controller
             $product ->setCreatedAt(new \DateTime());
             $product ->setUpdatedAt(new \DateTime());
 
-            dump($request);
-
             $file = $product->getPicture();
-            $fileName = $this->get('app.product_pic_uploader') ->upload($file);
+            $fileName = $this->get('app.product_pic_uploader')->upload($file);
 
             $product->setPicture($fileName);
 
@@ -119,9 +116,11 @@ class ProductController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
             $product->setUpdatedAt(new \DateTime());
-
+//
+//            $product->setPicture(new File(
+//                $this->getParameter('/')."/".$product->getPicture()));
             $file = $product->getPicture();
-            $fileName = $this->get('app.product_pic_uploader') ->upload($file);
+            $fileName = $this->get('app.product_pic_uploader')->upload($file);
 
             $product->setPicture($fileName);
 
