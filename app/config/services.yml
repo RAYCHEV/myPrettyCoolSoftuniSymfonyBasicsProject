@@ -6,11 +6,15 @@ parameters:
 services:
     app.product_pic_uploader:
         class: SoftUniBundle\Services\FileUploader
-        arguments: ['%product_pic_dir%']
+        arguments: ['%product_pic_dir%', "@doctrine.orm.entity_manager"]
 
     app.product-category_pic_uploader:
         class: SoftUniBundle\Services\FileUploader
-        arguments: ['%category_pic_dir%']
+        arguments: ['%category_pic_dir%', "@doctrine.orm.entity_manager"]
+
+    app.email_sender:
+        class: SoftUniBundle\Services\EmailSender
+        arguments: ["@mailer", "@doctrine.orm.entity_manager"]
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
