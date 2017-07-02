@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Spamlist</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ spamList.id }}</td>
+            </tr>
+            <tr>
+                <th>Fname</th>
+                <td>{{ spamList.fName }}</td>
+            </tr>
+            <tr>
+                <th>Mname</th>
+                <td>{{ spamList.mName }}</td>
+            </tr>
+            <tr>
+                <th>Lname</th>
+                <td>{{ spamList.lName }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ spamList.email }}</td>
+            </tr>
+            <tr>
+                <th>Addedat</th>
+                <td>{% if spamList.addedAt %}{{ spamList.addedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Editedat</th>
+                <td>{% if spamList.editedAt %}{{ spamList.editedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Isactive</th>
+                <td>{% if spamList.isActive %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('spamlist_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('spamlist_edit', { 'id': spamList.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Spamlists list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fname</th>
+                <th>Mname</th>
+                <th>Lname</th>
+                <th>Email</th>
+                <th>Addedat</th>
+                <th>Editedat</th>
+                <th>Isactive</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for spamList in spamLists %}
+            <tr>
+                <td><a href="{{ path('spamlist_show', { 'id': spamList.id }) }}">{{ spamList.id }}</a></td>
+                <td>{{ spamList.fName }}</td>
+                <td>{{ spamList.mName }}</td>
+                <td>{{ spamList.lName }}</td>
+                <td>{{ spamList.email }}</td>
+                <td>{% if spamList.addedAt %}{{ spamList.addedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if spamList.editedAt %}{{ spamList.editedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if spamList.isActive %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('spamlist_show', { 'id': spamList.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('spamlist_edit', { 'id': spamList.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('spamlist_new') }}">Create a new spamList</a>
+        </li>
+    </ul>
+{% endblock %}
