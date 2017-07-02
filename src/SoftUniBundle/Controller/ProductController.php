@@ -76,6 +76,8 @@ class ProductController extends Controller
             $em->persist($product);
             $em->flush();
 
+            $this->get('app.email_sender')->sendEmailNewProduct($product);
+
             return $this->redirectToRoute('product_list_ord_by_rank', array('id' => $product->getId()));
         }
 
@@ -117,10 +119,20 @@ class ProductController extends Controller
 
             $product->setUpdatedAt(new \DateTime());
 //
-//            $product->setPicture(new File(
-//                $this->getParameter('/')."/".$product->getPicture()));
+//            $em = $this->getDoctrine()->getManager();
+//            $repository = $em->getRepository('SoftUniBundle:Product');
+//            $query = $repository->createQueryBuilder('p')
+//                ->select('p.picture')
+//                ->where('p.id = ?1')
+//                ->setParameter(1, $product->getId())
+//                ->getQuery()
+//            ;
+//
+//            $fileName = $query->getResult();
+
+
             $file = $product->getPicture();
-            $fileName = $this->get('app.product_pic_uploader')->upload($file);
+            $fileName = $this->get('app.product_pic_uploader')->update($file, $product->getId());
 
             $product->setPicture($fileName);
 
