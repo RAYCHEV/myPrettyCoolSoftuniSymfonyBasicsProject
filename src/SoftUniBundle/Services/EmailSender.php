@@ -22,20 +22,42 @@ class EmailSender
             ."<br>". $product->getTitle()
             ."<hr>price: ". $product->getPrice();
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject('new product has been added [my cool shop]')
-            ->setFrom('quite.smart.stuff@gmail.com')
-            ->setTo('nikolay.g.raychev@gmail.com')
-            ->setBody($msg);
+        $recipentEmails = $this->getRecipentEmail();
+        for ($i = 0; $i <count($recipentEmails); $i++){
 
-        $this->mailer->send($message);
+            $message = \Swift_Message::newInstance()
+                ->setSubject('new product has been added [my cool shop]')
+                ->setFrom('quite.smart.stuff@gmail.com')
+                ->setTo(array_shift($recipentEmails[$i]))
+                ->setBody($msg);
+
+            $this->mailer->send($message);
+        }
+    }
+
+    private function getRecipentEmail()
+    {
+        $repository = $this->em->getRepository("SoftUniBundle:SpamList");
+        $qb = $repository
+            ->createQueryBuilder('r')
+            ->select('r.email')
+            ->getQuery();
+
+        $recipentEmail = $qb->getResult();
+        return $recipentEmail;
     }
 
     /**
-     * test function
+     * TEST function
      */
-    public function sendEmail()
+    public function testSendEmail()
     {
+        $r = $this->getRecipentEmail();
+//
+//            for ($i = 0; $i <count($r); $i++){
+//                dump(array_shift($r[$i]));
+//            }
+//            die();
         $message = \Swift_Message::newInstance()
             ->setSubject('test email')
             ->setFrom('quite.smart.stuff@gmail.com')

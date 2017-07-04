@@ -44,6 +44,10 @@ class SpamListController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $spamList->setAddedAt(new \DateTime());
+            $spamList->setEditedAt(new \DateTime());
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($spamList);
             $em->flush();
@@ -86,6 +90,8 @@ class SpamListController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+            $spamList->setEditedAt(new \DateTime());
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('spamlist_edit', array('id' => $spamList->getId()));

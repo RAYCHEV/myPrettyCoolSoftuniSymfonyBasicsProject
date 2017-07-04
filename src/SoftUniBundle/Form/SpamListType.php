@@ -13,7 +13,12 @@ class SpamListType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('fName')->add('mName')->add('lName')->add('email')->add('addedAt')->add('editedAt')->add('isActive');
+        $builder
+            ->add('fName')
+            ->add('mName')
+            ->add('lName')
+            ->add('email')
+            ->add('isActive');
     }
     
     /**

@@ -9,6 +9,8 @@ class SendMailController extends Controller
 {
     /**
      * @Route("/send")
+     *
+     * test controller
      */
     public function indexAction()
     {
