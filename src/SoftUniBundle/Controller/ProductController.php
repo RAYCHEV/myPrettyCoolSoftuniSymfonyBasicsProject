@@ -22,10 +22,7 @@ class ProductController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $products = $em->getRepository('SoftUniBundle:Product')->findAll();
-
+        $products = $this->get("app.product_manager")->getAll();
         return $this->render('SoftUniBundle:product:index.html.twig', array(
             'products' => $products,
         ));
@@ -39,10 +36,7 @@ class ProductController extends Controller
      */
     public function listAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $product = $em->getRepository('SoftUniBundle:Product')
-            ->findBy([], ['rank' => 'ASC']);
+        $product = $this->get("app.product_manager")->getAllOrderedByRang();
 
         return $this->render('SoftUniBundle:product:product-list.html.twig', array(
             'products' => $product,
@@ -64,18 +58,19 @@ class ProductController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $product ->setCreatedAt(new \DateTime());
-            $product ->setUpdatedAt(new \DateTime());
+//            $product ->setCreatedAt(new \DateTime());
+//            $product ->setUpdatedAt(new \DateTime());
+//
+//            $file = $product->getPicture();
+//            $fileName = $this->get('app.product_pic_uploader')->upload($file);
+//
+//            $product->setPicture($fileName);
+//
+//            $em = $this->getDoctrine()->getManager();
+//            $em->persist($product);
+//            $em->flush();
 
-            $file = $product->getPicture();
-            $fileName = $this->get('app.product_pic_uploader')->upload($file);
-
-            $product->setPicture($fileName);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($product);
-            $em->flush();
-
+            $this->get('app.product_manager')->createProduct($product);
             $this->get('app.email_sender')->sendEmailNewProduct($product);
 
             return $this->redirectToRoute('product_list_ord_by_rank', array('id' => $product->getId()));
@@ -118,17 +113,6 @@ class ProductController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
             $product->setUpdatedAt(new \DateTime());
-//
-//            $em = $this->getDoctrine()->getManager();
-//            $repository = $em->getRepository('SoftUniBundle:Product');
-//            $query = $repository->createQueryBuilder('p')
-//                ->select('p.picture')
-//                ->where('p.id = ?1')
-//                ->setParameter(1, $product->getId())
-//                ->getQuery()
-//            ;
-//
-//            $fileName = $query->getResult();
 
 
             $file = $product->getPicture();
@@ -160,9 +144,8 @@ class ProductController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($product);
-            $em->flush();
+            
+            $this->get("app.product_manager")->removeProduct($product);
         }
 
         return $this->redirectToRoute('admin_product_index');

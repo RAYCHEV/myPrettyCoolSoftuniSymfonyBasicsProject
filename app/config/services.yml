@@ -15,6 +15,16 @@ services:
     app.email_sender:
         class: SoftUniBundle\Services\EmailSender
         arguments: ["@mailer", "@doctrine.orm.entity_manager"]
+
+    app.product_manager:
+        class: SoftUniBundle\Services\ProductManager
+        arguments: ["@doctrine.orm.entity_manager","@app.product_pic_uploader"]
+
+    app.product_category_manager:
+        class: SoftUniBundle\Services\ProductCategoryManager
+        arguments: ["@doctrine.orm.entity_manager", "@app.product_pic_uploader"]
+
+
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']

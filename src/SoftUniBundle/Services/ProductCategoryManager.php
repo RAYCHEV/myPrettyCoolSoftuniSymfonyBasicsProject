@@ -5,9 +5,9 @@ namespace SoftUniBundle\Services;
 
 
 use Doctrine\ORM\EntityManager;
-use SoftUniBundle\Entity\Product;
+use SoftUniBundle\Entity\ProductCategory;
 
-class ProductManager
+class ProductCategoryManager
 {
     protected $em;
     protected $repository;
@@ -16,7 +16,7 @@ class ProductManager
     public function __construct(EntityManager $em, FileUploader $fileUploader)
     {
         $this->em = $em;
-        $this->repository = $this->em->getRepository('SoftUniBundle:Product');
+        $this->repository = $this->em->getRepository('SoftUniBundle:ProductCategory');
 
         $this->fileUploader = $fileUploader;
     }
@@ -31,26 +31,26 @@ class ProductManager
         return $this->repository->findBy([], ['rank' => 'ASC']);
     }
 
-    public function createProduct(Product $product)
+    public function createProduct(ProductCategory $productCategory)
     {
-        $product -> setCreatedAt(new \DateTime());
-        $product -> setUpdatedAt(new \DateTime());
+        $productCategory -> setCreatedAt(new \DateTime());
+        $productCategory -> setUpdatedAt(new \DateTime());
 
-        $file = $product -> getPicture();
+        $file = $productCategory -> getPicture();
         $fileName = $this->fileUploader->upload($file);
 
-        $product->setPicture($fileName);
+        $productCategory->setPicture($fileName);
 
-        $this->em->persist($product);
+        $this->em->persist($productCategory);
         $this->em->flush();
 //        $em = $this->getDoctrine()->getManager();
 //        $em->persist($product);
 //        $em->flush();
     }
 
-    public function removeProduct($product)
+    public function removeProduct($productCategory)
     {
-        $this->em->remove($product);
+        $this->em->remove($productCategory);
         $this->em->flush();
     }
 
@@ -63,5 +63,4 @@ class ProductManager
     {
         //my code here...
     }
-
 }
