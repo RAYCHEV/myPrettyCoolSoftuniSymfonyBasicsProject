@@ -154,4 +154,37 @@ class ProductCategoryController extends Controller
             ->getForm()
         ;
     }
+
+    /**
+     * @Route("/findProductCategory", name="find_productCategory")
+     *
+     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function findProductCategory()
+    {
+        $form = $this->createForm('SoftUniBundle\Form\findByForm');
+
+        return $this->render('SoftUniBundle:productcategory:findProductCategory.html.twig',
+            [
+                'form' => $form ->createView()
+            ]);
+    }
+
+    /**
+     * @Route("/findProductCategory", name="find_productCategory_action")
+     *
+     * @Method("POST")
+     */
+    public function findProductCategoryAction(Request $request)
+    {
+        $params = $request->request->get('softuniBundle-findBy-form');
+        $criteria  = $params['findCriteria'];
+        $keyword = $params['findField'];
+
+        $productCategories = $this->get('app.product_category_manager')->findProductCategoryBy($criteria, $keyword);
+
+        return $this->render('SoftUniBundle:productcategory:search-result.html.twig',
+            array('productCategories' => $productCategories));
+    }
 }

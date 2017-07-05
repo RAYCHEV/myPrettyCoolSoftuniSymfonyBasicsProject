@@ -59,8 +59,18 @@ class ProductCategoryManager
         return $this->em;
     }
 
-    public function findProductCategoryBy($criteria)
+    public function findProductCategoryBy($criteria, $keyword)
     {
-        //my code here...
+        $query = $this->repository->createQueryBuilder('prCat')
+            ->where('prCat.' . $criteria . ' LIKE :key')
+            ->setParameter('key', '%' . $keyword . '%')
+            ->getQuery();
+
+        $productCategories = $query->getResult();
+
+//        dump($query);
+//        dump($result); die("happy");
+
+        return $productCategories;
     }
 }
