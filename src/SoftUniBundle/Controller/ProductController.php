@@ -6,6 +6,7 @@ use SoftUniBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -57,18 +58,6 @@ class ProductController extends Controller
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-//            $product ->setCreatedAt(new \DateTime());
-//            $product ->setUpdatedAt(new \DateTime());
-//
-//            $file = $product->getPicture();
-//            $fileName = $this->get('app.product_pic_uploader')->upload($file);
-//
-//            $product->setPicture($fileName);
-//
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($product);
-//            $em->flush();
 
             $this->get('app.product_manager')->createProduct($product);
             $this->get('app.email_sender')->sendEmailNewProduct($product);
@@ -165,5 +154,38 @@ class ProductController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * @Route("/findProduct", name="find_product")
+     *
+     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function findProduct()
+    {
+        $form = $this->createForm('SoftUniBundle\Form\findByForm');
+
+        return $this->render('SoftUniBundle:product:findProduct.html.twig',
+            [
+                'form' => $form ->createView()
+            ]);
+    }
+
+    /**
+     * @Route("/findProduct", name="find_product_action")
+     *
+     * @Method("POST")
+     */
+    public function findProductAction(Request $request)
+    {
+        $params = $request->request->get('softuniBundle-findBy-form');
+        $criteria  = $params['findCriteria'];
+        $keyword = $params['findField'];
+
+        $products = $this->get('app.product_manager')->findProductBy($criteria, $keyword);
+
+        return $this->render('SoftUniBundle:product:search-result.html.twig',
+            array('products' => $products));
     }
 }

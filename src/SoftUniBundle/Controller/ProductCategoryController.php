@@ -23,9 +23,7 @@ class ProductCategoryController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $productCategories = $em->getRepository('SoftUniBundle:ProductCategory')->findAll();
+        $productCategories = $this->get('app.product_category_manager')->getAll();
 
         return $this->render('SoftUniBundle:productcategory:index.html.twig', array(
             'productCategories' => $productCategories,
@@ -41,10 +39,7 @@ class ProductCategoryController extends Controller
      */
     public function listAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $productCategories = $em->getRepository('SoftUniBundle:ProductCategory')
-                        ->findBy([], ['rank' => 'ASC']);
+        $productCategories = $this->get('app.product_category_manager')->getAllOrderedByRang();
 
         return $this->render('SoftUniBundle:productcategory:category-list.html.twig', array(
             'productCategories' => $productCategories,
@@ -65,17 +60,7 @@ class ProductCategoryController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $productCategory->setCreatedAt(new \DateTime());
-            $productCategory->setUpdatedAt(new \DateTime());
-
-            $file = $productCategory->getPicture();
-            $fileName = $this->get('app.product-category_pic_uploader') ->upload($file);
-
-            $productCategory->setPicture($fileName);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($productCategory);
-            $em->flush();
+            $this->get('app.product_category_manager')->createProductCategory($productCategory);
 
             return $this->redirectToRoute('product-category_list_ord_by_rank');
         }
@@ -147,9 +132,8 @@ class ProductCategoryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($productCategory);
-            $em->flush();
+
+            $this->get('app.product_category_manager')->removeProductCategory($productCategory);
         }
 
         return $this->redirectToRoute('admin_product-category_index');

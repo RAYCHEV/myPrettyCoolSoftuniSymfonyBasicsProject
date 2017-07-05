@@ -59,9 +59,19 @@ class ProductManager
         return $this->em;
     }
 
-    public function findProductBy($criteria)
+    public function findProductBy($criteria, $keyword)
     {
-        //my code here...
+        $query = $this->repository->createQueryBuilder('pr')
+            ->where('pr.'.$criteria.' LIKE :key')
+            ->setParameter('key', '%'.$keyword.'%')
+            ->getQuery();
+
+        $products = $query->getResult();
+
+//        dump($query);
+//        dump($result); die("happy");
+
+        return $products;
     }
 
 }

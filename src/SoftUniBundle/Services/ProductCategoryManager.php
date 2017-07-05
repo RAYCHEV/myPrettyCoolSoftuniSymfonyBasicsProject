@@ -31,7 +31,7 @@ class ProductCategoryManager
         return $this->repository->findBy([], ['rank' => 'ASC']);
     }
 
-    public function createProduct(ProductCategory $productCategory)
+    public function createProductCategory(ProductCategory $productCategory)
     {
         $productCategory -> setCreatedAt(new \DateTime());
         $productCategory -> setUpdatedAt(new \DateTime());
@@ -48,7 +48,7 @@ class ProductCategoryManager
 //        $em->flush();
     }
 
-    public function removeProduct($productCategory)
+    public function removeProductCategory($productCategory)
     {
         $this->em->remove($productCategory);
         $this->em->flush();
@@ -59,7 +59,7 @@ class ProductCategoryManager
         return $this->em;
     }
 
-    public function findProductBy($criteria)
+    public function findProductCategoryBy($criteria)
     {
         //my code here...
     }
