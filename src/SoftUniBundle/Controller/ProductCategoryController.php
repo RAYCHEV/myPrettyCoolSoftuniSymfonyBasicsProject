@@ -163,7 +163,7 @@ class ProductCategoryController extends Controller
      */
     public function findProductCategory()
     {
-        $form = $this->createForm('SoftUniBundle\Form\findByForm');
+        $form = $this->createForm('SoftUniBundle\Form\FindProductCategoryByType');
 
         return $this->render('SoftUniBundle:productcategory:findProductCategory.html.twig',
             [
@@ -178,9 +178,14 @@ class ProductCategoryController extends Controller
      */
     public function findProductCategoryAction(Request $request)
     {
+
         $params = $request->request->get('softuniBundle-findBy-form');
-        $criteria  = $params['findCriteria'];
+        $criteria  = $params['findCriteria'] ?? null;
         $keyword = $params['findField'];
+
+        if (empty($criteria) || empty($keyword)){
+            return $this->redirectToRoute('product-category_list_ord_by_rank');
+        }
 
         $productCategories = $this->get('app.product_category_manager')->findProductCategoryBy($criteria, $keyword);
 

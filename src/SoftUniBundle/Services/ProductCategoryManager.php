@@ -61,15 +61,28 @@ class ProductCategoryManager
 
     public function findProductCategoryBy($criteria, $keyword)
     {
-        $query = $this->repository->createQueryBuilder('prCat')
-            ->where('prCat.' . $criteria . ' LIKE :key')
-            ->setParameter('key', '%' . $keyword . '%')
+        $predicate = "";
+        $numOfCriteria = count($criteria);
+        for ($i = 0; $i <$numOfCriteria; $i++){
+
+            $predicate .= "pr.$criteria[$i] LIKE :key";
+            if ($numOfCriteria != ($i+1)) {
+                $predicate .= " OR ";
+            }
+        }
+
+//        dump($predicate);
+
+        //'pr.'.$criteria.' LIKE :key'
+        $query = $this->repository->createQueryBuilder('pr')
+            ->where($predicate)
+            ->setParameter('key', '%'.$keyword.'%')
             ->getQuery();
 
         $productCategories = $query->getResult();
-
+//
 //        dump($query);
-//        dump($result); die("happy");
+//        dump($products); die("happy");
 
         return $productCategories;
     }

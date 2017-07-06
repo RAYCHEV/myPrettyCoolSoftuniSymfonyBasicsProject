@@ -164,7 +164,7 @@ class ProductController extends Controller
      */
     public function findProduct()
     {
-        $form = $this->createForm('SoftUniBundle\Form\findByForm');
+        $form = $this->createForm('SoftUniBundle\Form\FindProductByType');
 
         return $this->render('SoftUniBundle:product:findProduct.html.twig',
             [
@@ -180,8 +180,16 @@ class ProductController extends Controller
     public function findProductAction(Request $request)
     {
         $params = $request->request->get('softuniBundle-findBy-form');
-        $criteria  = $params['findCriteria'];
+
+        $criteria  = $params['findCriteria'] ?? null;
         $keyword = $params['findField'];
+
+        if (empty($criteria) || empty($keyword))
+        {
+            return $this->redirectToRoute('product_list_ord_by_rank');
+        }
+//        dump($keyword);
+//        dump($criteria); die;
 
         $products = $this->get('app.product_manager')->findProductBy($criteria, $keyword);
 

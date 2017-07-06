@@ -8,6 +8,7 @@
             <tr>
                 <th>Id</th>
                 <th>Slug</th>
+                <th>Picture</th>
                 <th>Title</th>
                 <th>Description</th>
                 <th>Rank</th>
@@ -22,6 +23,8 @@
             <tr>
                 <td><a href="{{ path('admin_product-category_show', { 'id': productCategory.id }) }}">{{ productCategory.id }}</a></td>
                 <td>{{ productCategory.slug }}</td>
+                <td><a target="_blank" href="{{ asset('uploads/product-category/' ~ productCategory.picture) }}">
+                        <img src="{{ asset('uploads/product-category/' ~ productCategory.picture) }}"> </a></td>
                 <td>{{ productCategory.title }}</td>
                 <td>{{ productCategory.description }}</td>
                 <td>{{ productCategory.rank }}</td>
