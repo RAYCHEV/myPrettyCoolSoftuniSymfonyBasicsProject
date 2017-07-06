@@ -10,30 +10,40 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class findByForm extends AbstractType
+class FindProductByType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $criteria =
+            [
+                'slug' => 'slug',
+                'title' => 'title',
+                'description' => 'description',
+                'picture' => 'picture',
+                'subtitle' => 'subtitle',
+            ];
+
+
         $builder
-            ->add('findCriteria', ChoiceType::class,
-                [
-                    'choices'  =>
-                        [
-                           'slug' => 'slug',
-                            'title' => 'title',
-                            'description' => 'description',
-                        ],
-                    'multiple' => false,
-                    'label' => false,
-                ])
             ->add('findField', TextType::class,
                 [
                     'label' => false,
                     'attr' => [
                         'placeholder' => 'type key phrase'
-                    ]
+                    ],
+                    'required' => false
                 ]
             )
+            ->add('findCriteria', ChoiceType::class,
+                [
+                    'choices'  => $criteria,
+                        'data' => $criteria,
+                    'multiple' => true,
+                    'expanded' => true,
+                    'label' => false,
+                    'required' => false,
+                ])
+
             ->add('findIt   ', SubmitType::class)
         ;
     }
@@ -45,6 +55,6 @@ class findByForm extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'softuniBundle-findBy-form';
+        return 'softuniBundle-findProduct';
     }
 }
