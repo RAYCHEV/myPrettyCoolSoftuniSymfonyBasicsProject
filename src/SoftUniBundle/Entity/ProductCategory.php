@@ -78,13 +78,13 @@ class ProductCategory
 
     /**
      * One Category has Many Categories.
-     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="SoftUniBundle\Entity\ProductCategory", mappedBy="parent")
      */
     private $children;
 
     /**
      * Many Categories have One Category.
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="SoftUniBundle\Entity\ProductCategory", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;
@@ -288,11 +288,6 @@ class ProductCategory
     public function setProducts($products = null)
     {
 
-//        $this->products = new ArrayCollection();
-//        if (is_null($products))
-//        {
-//            return;
-//        }
         foreach ($products as $p){
             $this->addProduct($p);
         }
@@ -304,10 +299,7 @@ class ProductCategory
      */
     public function addProduct(Product $prod)
     {
-//        if ($this->products->contains($prod))
-//        {
-//            return;
-//        }
+
         $prod ->addProductCategory($this);
         $this->products[] = $prod;
     }
@@ -320,20 +312,36 @@ class ProductCategory
         $this->products->removeElement($prod);
         $prod->removeProductCategory($this);
     }
+
     /**
-     *
-    public function addPost(Post $post)
-    {
-    $this->posts[] = $post;
-    $post->addTag($this);
-    return $this;
-    }
-
-    public function removePost(Post $post)
-    {
-    $this->posts->removeElement($post);
-    $post->removeTag($this);
-    }
+     * @return mixed
      */
-}
+    public function getChildren()
+    {
+        return $this->children;
+    }
 
+    /**
+     * @param mixed $children
+     */
+    public function setChildren($children)
+    {
+        $this->children = $children;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param mixed $parent
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+}

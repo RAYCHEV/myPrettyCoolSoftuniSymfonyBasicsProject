@@ -23,12 +23,12 @@ class ProductCategoryManager
 
     public function getAll()
     {
-        return $this->repository->findAll();
+        return $this->repository->findBy(['parent' => null]);
     }
 
     public function getAllOrderedByRang()
     {
-        return $this->repository->findBy([], ['rank' => 'ASC']);
+        return $this->repository->findBy(['parent' => null], ['rank' => 'ASC']);
     }
 
     public function createProductCategory(ProductCategory $productCategory)

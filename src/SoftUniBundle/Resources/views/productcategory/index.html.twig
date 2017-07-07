@@ -33,6 +33,7 @@
                 <td>{% for products in productCategory.getProducts %}
                         {{ products }}<br>
                     {% endfor %}
+                </td>
                 <td>
                     <ul>
                         <li>
@@ -42,6 +43,13 @@
                             <a href="{{ path('admin_product-category_edit', { 'id': productCategory.id }) }}">edit</a>
                         </li>
                     </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% for child in productCategory.getChildren %}
+                    {{ dump(child) }}
+                    {% endfor %}
                 </td>
             </tr>
         {% endfor %}
