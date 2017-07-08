@@ -71,6 +71,7 @@ class ProductCategoryController extends Controller
         ));
     }
 
+
     /**
      * Finds and displays a productCategory entity.
      *
@@ -82,6 +83,22 @@ class ProductCategoryController extends Controller
         $deleteForm = $this->createDeleteForm($productCategory);
 
         return $this->render('SoftUniBundle:productcategory:show.html.twig', array(
+            'productCategory' => $productCategory,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Finds and displays a productCategory entity and subcategoris.
+     *
+     * @Route("admin/product-subCategories/{id}", name="admin_product-subCategories_show")
+     * @Method("GET")
+     */
+    public function showSubcategoriesAction(ProductCategory $productCategory)
+    {
+        $deleteForm = $this->createDeleteForm($productCategory);
+
+        return $this->render('SoftUniBundle:productcategory:showSubCategories.html.twig', array(
             'productCategory' => $productCategory,
             'delete_form' => $deleteForm->createView(),
         ));

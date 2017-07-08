@@ -20,9 +20,13 @@
         </thead>
         <tbody>
         {% for productCategory in productCategories %}
+            {#{% if productCategory.getChildren %}#}
+
+            {#{% endif %}#}
+            {#{% for child in productCategory.getChildren %}#}
             <tr>
                 <td><a href="{{ path('admin_product-category_show', { 'id': productCategory.id }) }}">{{ productCategory.id }}</a></td>
-                <td>{{ productCategory.slug }}</td>
+                <td><a href="{{ path('admin_product-subCategories_show', {'id': productCategory.id }) }}" >{{ productCategory.slug }} </a></td>
                 <td><a target="_blank" href="{{ asset('uploads/product-category/' ~ productCategory.picture) }}">
                         <img src="{{ asset('uploads/product-category/' ~ productCategory.picture) }}"> </a></td>
                 <td>{{ productCategory.title }}</td>
@@ -45,13 +49,12 @@
                     </ul>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    {% for child in productCategory.getChildren %}
-                    {{ dump(child) }}
-                    {% endfor %}
-                </td>
-            </tr>
+            {#<tr>#}
+                {#{% for child in productCategory.getChildren %}#}
+                    {#{{ dump(child) }}#}
+                    {#{% endfor %}#}
+            {#</tr>#}
+                {#{% endfor %}#}
         {% endfor %}
         </tbody>
     </table>

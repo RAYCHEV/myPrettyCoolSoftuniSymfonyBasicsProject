@@ -23,11 +23,11 @@ class DefaultController extends Controller
 //        $this->get("app.email_sender")->testSendEmail();
 //        return $this->render('SoftUniBundle:Default:index.html.twig');
 
-        $products = $this->get("app.product_manager")->getAll();
+//        $products = $this->get("app.product_manager")->getAll();
 
-        return $this->render('SoftUniBundle:product:index.html.twig', array(
-            'products' => $products,
-        ));
+//        return $this->render('SoftUniBundle:productcategory:showSubCategories.html.twig', array(
+//            'products' => ,
+//        ));
 
     }
 }

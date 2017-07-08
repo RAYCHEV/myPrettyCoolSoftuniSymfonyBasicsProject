@@ -1,0 +1,63 @@
+{% extends 'SoftUniBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>Product category <br> and subcategories</h1>
+
+    <table>
+        <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Slug</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Rank</th>
+                    <th>Createdat</th>
+                    <th>Updatedat</th>
+                    <th></th>
+
+                </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ productCategory.id }}</td>
+                <td>{{ productCategory.slug }}</td>
+                <td>{{ productCategory.title }}</td>
+                <td>{{ productCategory.description }}</td>
+                <td>{{ productCategory.rank }}</td>
+                <td>{% if productCategory.createdAt %}{{ productCategory.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if productCategory.updatedAt %}{{ productCategory.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul><li>
+                        <a href="{{ path('admin_product-category_edit', { 'id': productCategory.id }) }}">Edit</a>
+                    </li></ul>
+                </td>
+            </tr>
+                {% for child in productCategory.getChildren %}
+                   <tr>
+                        <td>subcategory id:{{ child.id }}</td>
+                        <td>{{ child.slug }}</td>
+                        <td>{{ child.title }}</td>
+                        <td>{{ child.description }}</td>
+                        <td>{{ child.rank }}</td>
+                        <td>{% if child.createdAt %}{{ productCategory.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td>{% if child.updatedAt %}{{ productCategory.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                       <td><ul><li>
+                                   <a href="{{ path('admin_product-category_edit', { 'id': child.id }) }}">Edit</a>
+                               </li></ul></td>
+                   </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_product-category_index') }}">Back to the list</a>
+        </li>
+
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

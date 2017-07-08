@@ -77,7 +77,7 @@ class ProductCategory
     private $products;
 
     /**
-     * One Category has Many Categories.
+     * One Category has Many subcategories.
      * @ORM\OneToMany(targetEntity="SoftUniBundle\Entity\ProductCategory", mappedBy="parent")
      */
     private $children;

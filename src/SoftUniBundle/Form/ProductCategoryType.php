@@ -39,6 +39,7 @@ class ProductCategoryType extends AbstractType
                     'class' => 'SoftUniBundle\Entity\Product',
                     'multiple' => true
                 ])
+            ->add('parent')
         ;
     }
     
